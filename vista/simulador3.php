@@ -60,7 +60,7 @@
                                     <label class="col-md-4 control-label" for="fec_pago">Fecha de Pago:</label>
                                     <div class="col-md-8">
                                         <select class="form-control" id="fec_pago" style="width: 100%;" v-model="fec_pago">
-                                            <option value="">SELECCIONE UN PRODUCTO</option>
+                                            <option value="">SELECCIONE UN DÍA</option>
                                             <option value="1">1</option>
                                             <option value="5">5</option>
                                             <option value="10">10</option>
@@ -103,6 +103,54 @@
                             </form>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="tem">TEM(%):</label>
+                                    <div class="col-md-8">
+                                        <input class="form-control" id="tem" type="number" placeholder="0.00" v-model.number="tem">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4" for="tea">TEA(%):</label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-static">{{tea.toFixed(2)}}%</p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4" for="plazo_final">Plazo final elegido por el cliente (meses):</label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-static"><strong>{{plazo_final}} meses</strong></p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4" for="monto_a_llevar">Monto a llevar:</label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-static"><strong>{{monto_a_llevar.toFixed(2)}}</strong></p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <div class="box-footer">
                     <div class="form-group">
@@ -126,6 +174,54 @@
                                     <label class="control-label col-md-4" for="seg_desg">Seguro de Desgravamen:</label>
                                     <div class="col-md-8">
                                         <p class="form-control-static">{{seg_desg.toFixed(2)}}</p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4" for="seg_protec">Seguro de Protección de Pagos:</label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-static">{{seg_protec.toFixed(2)}}</p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4" for="cuota">Cuota (S/.):</label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-static">S/. {{cuota.toFixed(2)}}</p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4" for="tcea">TCEA:</label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-static">{{tcea.toFixed(2)}}%</p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4" for="tot_interes">Total de Interés Compensatorio:</label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-static">{{tot_interes.toFixed(2)}}</p>
                                     </div>
                                 </div>
                             </form>
@@ -181,7 +277,15 @@
             hoy: '<?php echo $fecha_actual;?>',
             fec_pago:"",
             monto_oferta:0.00,
-            plazo:""
+            plazo:"",
+            tem:0.00,
+            tea:0.00,
+            plazo_final:0,
+            monto_a_llevar:0.00,
+            seg_protec:0.00,
+            cuota:0.00,
+            tcea:0.00,
+            tot_interes:0.00
         },
         created: function () {
         },
