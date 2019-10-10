@@ -19,7 +19,7 @@
 <section class="content">
     <div class="row" id="sys_calc_3">
         <div class="col-md-6 col-xs-12">
-            <div class="box box-default">
+            <div class="box box-solid box-default">
                 <div class="box-header with-border">
                     <h3 class="box-title">Operaciones</h3>
                 </div>
@@ -57,10 +57,10 @@
                         <div class="col-md-12 col-xs-12">
                             <form class="form-horizontal">
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="fec_pago">Fecha de Pago:</label>
+                                    <label class="col-md-4 control-label" for="f_pago">Fecha de Pago:</label>
                                     <div class="col-md-8">
-                                        <select class="form-control" id="fec_pago" style="width: 100%;" v-model="fec_pago">
-                                            <option value="">SELECCIONE UN DÍA</option>
+                                        <select class="form-control" id="f_pago" style="width: 100%;" v-model="fec_pago">
+                                            <option value="0">SELECCIONE UN DÍA</option>
                                             <option value="1">1</option>
                                             <option value="5">5</option>
                                             <option value="10">10</option>
@@ -94,7 +94,7 @@
                                     <div class="col-md-8">
                                         <select class="form-control" id="plazo" style="width: 100%;" v-model="plazo">
                                             <option value="">SELECCIONE UN PLAZO</option>
-                                            <?php for($i=1;$i<=48;$i++){?>
+                                            <?php for($i=12;$i<=48;$i++){?>
                                                 <option value="<?php echo $i;?>"><?php echo $i;?></option>
                                             <?php }?>
                                         </select>
@@ -115,13 +115,14 @@
                             </form>
                         </div>
                     </div>
+                    <legend></legend>
                     <div class="row">
                         <div class="col-md-12 col-xs-12">
                             <form class="form-horizontal">
                                 <div class="form-group">
                                     <label class="control-label col-md-4" for="tea">TEA(%):</label>
                                     <div class="col-md-8">
-                                        <p class="form-control-static">{{tea.toFixed(2)}}%</p>
+                                        <p class="form-control-static"><span class="label label-success" style="font-size:100% !important;">{{tea.toFixed(2)}}%</span></p>
                                     </div>
                                 </div>
                             </form>
@@ -133,7 +134,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-4" for="plazo_final">Plazo final elegido por el cliente (meses):</label>
                                     <div class="col-md-8">
-                                        <p class="form-control-static"><strong>{{plazo_final}} meses</strong></p>
+                                        <p class="form-control-static"><span class="label label-success" style="font-size:100% !important;">Día {{plazo_final}}</span></p>
                                     </div>
                                 </div>
                             </form>
@@ -145,7 +146,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-4" for="monto_a_llevar">Monto a llevar:</label>
                                     <div class="col-md-8">
-                                        <p class="form-control-static"><strong>{{monto_a_llevar.toFixed(2)}}</strong></p>
+                                        <p class="form-control-static"><span class="label label-success" style="font-size:100% !important;">{{monto_a_llevar.toFixed(2)}}</span></p>
                                     </div>
                                 </div>
                             </form>
@@ -154,7 +155,7 @@
                 </div>
                 <div class="box-footer">
                     <div class="form-group">
-                        <button type="button" class="btn btn-primary" id="buscar_dato" style="float:right;">
+                        <button type="button" class="btn btn-primary" id="calcular" @click="calcular()" style="float:right;">
                             <i class="glyphicon glyphicon-exclamation-sign"></i> Calcular
                         </button>
                     </div>
@@ -162,7 +163,7 @@
             </div>
         </div>
         <div class="col-md-6 col-xs-12">
-            <div class="box box-default">
+            <div class="box box-solid box-default">
                 <div class="box-header with-border">
                     <h3 class="box-title">Resultados</h3>
                 </div>
@@ -173,7 +174,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-4" for="seg_desg">Seguro de Desgravamen:</label>
                                     <div class="col-md-8">
-                                        <p class="form-control-static">{{seg_desg.toFixed(2)}}</p>
+                                        <p class="form-control-static"><span class="label label-warning" style="font-size:100% !important;">{{seg_desg.toFixed(2)}}</span></p>
                                     </div>
                                 </div>
                             </form>
@@ -185,7 +186,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-4" for="seg_protec">Seguro de Protección de Pagos:</label>
                                     <div class="col-md-8">
-                                        <p class="form-control-static">{{seg_protec.toFixed(2)}}</p>
+                                        <p class="form-control-static"><span class="label label-warning" style="font-size:100% !important;">{{seg_protec.toFixed(2)}}</span></p>
                                     </div>
                                 </div>
                             </form>
@@ -197,7 +198,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-4" for="cuota">Cuota (S/.):</label>
                                     <div class="col-md-8">
-                                        <p class="form-control-static">S/. {{cuota.toFixed(2)}}</p>
+                                        <p class="form-control-static"><span class="label label-warning" style="font-size:100% !important;">S/. {{cuota.toFixed(2)}}</span></p>
                                     </div>
                                 </div>
                             </form>
@@ -209,7 +210,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-4" for="tcea">TCEA:</label>
                                     <div class="col-md-8">
-                                        <p class="form-control-static">{{tcea.toFixed(2)}}%</p>
+                                        <p class="form-control-static"><span class="label label-warning" style="font-size:100% !important;">{{tcea.toFixed(2)}}%</span></p>
                                     </div>
                                 </div>
                             </form>
@@ -221,7 +222,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-4" for="tot_interes">Total de Interés Compensatorio:</label>
                                     <div class="col-md-8">
-                                        <p class="form-control-static">{{tot_interes.toFixed(2)}}</p>
+                                        <p class="form-control-static"><span class="label label-warning" style="font-size:100% !important;">{{tot_interes.toFixed(2)}}</span></p>
                                     </div>
                                 </div>
                             </form>
@@ -231,7 +232,7 @@
             </div>
         </div>
         <div class="col-md-12 col-xs-12">
-            <div class="box box-default">
+            <div class="box box-solid box-default">
                 <div class="box-header with-border">
                     <h3 class="box-title">Detalle de Cuotas</h3>
                 </div>
@@ -275,7 +276,7 @@
             producto:"",
             seg_desg:0.00,
             hoy: '<?php echo $fecha_actual;?>',
-            fec_pago:"",
+            fec_pago:0,
             monto_oferta:0.00,
             plazo:"",
             tem:0.00,
@@ -290,7 +291,7 @@
         created: function () {
         },
         methods:{
-            busca_valor(){
+            calcular(){
                 var formatNumber = {
                     separador: ",", 
                     sepDecimal: '.',
@@ -310,7 +311,68 @@
                         return this.formatear(num);
                     }
                 }
-            },
+
+                this.tea = (Math.pow(1+this.tem/100,12)-1)*100;
+                this.plazo_final = this.plazo;
+
+                //validacion campo Monto a llevar
+                if(this.plazo<='23'){
+                    this.monto_a_llevar = this.monto_oferta;
+                }else{
+                    if(this.monto_oferta<=5000){
+                        this.monto_a_llevar = 5000;
+                    }else{
+                        switch(this.producto){
+                            case "1":{
+                                let me = this;
+                                var url = 'controlador/get_pya_cdd_value.php?plazo='+sys_calc_3.plazo_final+'&monto='+sys_calc_3.monto_oferta;
+                                axios.get(url)
+                                .then(function (response) {
+                                    me.monto_a_llevar = response.data;
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                })
+                                .finally(function () {
+                                });
+                                break;
+                            }
+                            case "2":{
+                                let me = this;
+                                var url = 'controlador/get_pya_cdd_value.php?plazo='+sys_calc_3.plazo_final+'&monto='+sys_calc_3.monto_oferta;
+                                axios.get(url)
+                                .then(function (response) {
+                                    me.monto_a_llevar = response.data;
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                })
+                                .finally(function () {
+                                });
+                                break;
+                            }
+                            case "3":{
+                                let me = this;
+                                var url = 'controlador/get_prestamo_senior_value.php?plazo='+sys_calc_3.plazo_final+'&monto='+sys_calc_3.monto_oferta;
+                                axios.get(url)
+                                .then(function (response) {
+                                    me.monto_a_llevar = response.data;
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                })
+                                .finally(function () {
+                                });
+                                break;
+                            }
+                            default: {
+                                me.monto_a_llevar = 0.00;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         },
         mounted() {
     

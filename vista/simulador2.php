@@ -15,7 +15,7 @@
 <section class="content">
     <div class="row" id="sys_calc_2">
         <div class="col-md-6 col-xs-12">
-            <div class="box box-default">
+            <div class="box box-solid box-default">
                 <div class="box-header with-border">
                     <h3 class="box-title">Operaciones</h3>
                 </div>
@@ -32,7 +32,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-2" for="factor">Factor:</label>
                                     <div class="col-md-10">
-                                        <p class="form-control-static">{{factor.toFixed(2)}}</p>
+                                        <p class="form-control-static"><span class="label label-success" style="font-size:100% !important;">{{factor.toFixed(2)}}</span></p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -44,7 +44,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-2" for="cuotas">12 Cuotas:</label>
                                     <div class="col-md-10">
-                                        <p class="form-control-static">{{cuota}}</p>
+                                        <p class="form-control-static"><span class="label label-success" style="font-size:100% !important;">{{cuota}}</span></p>
                                     </div>
                                 </div>
                             </form>
@@ -69,7 +69,7 @@
             </div>
         </div>
         <div class="col-md-6 col-xs-12">
-            <div class="box box-default">
+            <div class="box box-solid box-default">
                 <div class="box-header with-border">
                     <h3 class="box-title">Resultado</h3>
                 </div>
@@ -80,7 +80,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-2" for="email">Neto:</label>
                                     <div class="col-md-10">
-                                        <p class="form-control-static">{{cuota}}</p>
+                                        <p class="form-control-static"><span class="label label-primary" style="font-size:100% !important;">{{cuota}}</span></p>
                                     </div>
                                 </div>
                             </form>
@@ -240,8 +240,8 @@
                         }
                     ],
                 });
-                //$("th").css("background-color", "#4c88bb");
-                //$("th").css("color", "white");
+                $("th").css("background-color", "#4c88bb");
+                $("th").css("color", "white");
             }
         },
         mounted() {
