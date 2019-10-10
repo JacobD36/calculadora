@@ -21,7 +21,7 @@
         <div class="col-md-6 col-xs-12">
             <div class="box box-solid box-default">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Operaciones</h3>
+                    <h3 class="box-title"><i class="fa fa-calculator"></i> Operaciones</h3>
                 </div>
                 <div class="box-body">
                     <div class="row">
@@ -165,7 +165,7 @@
         <div class="col-md-6 col-xs-12">
             <div class="box box-solid box-default">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Resultados</h3>
+                    <h3 class="box-title"><i class="fa fa-print"></i> Resultados</h3>
                 </div>
                 <div class="box-body">
                     <div class="row">
@@ -234,7 +234,7 @@
         <div class="col-md-12 col-xs-12">
             <div class="box box-solid box-default">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Detalle de Cuotas</h3>
+                    <h3 class="box-title"><i class="fa fa-pie-chart"></i> Detalle de Cuotas</h3>
                 </div>
                 <div class="box-body">
                     <div class="row">
