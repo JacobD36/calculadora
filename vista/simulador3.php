@@ -283,6 +283,7 @@
             tea:0.00,
             plazo_final:0,
             monto_a_llevar:0.00,
+            monto_a_llevar_total:0.00,
             seg_protec:0.00,
             cuota:0.00,
             tcea:0.00,
@@ -312,6 +313,23 @@
                     }
                 }
 
+                var sumaFecha = function(d, fecha) {
+                    var Fecha = new Date();
+                    var sFecha = fecha || (Fecha.getDate() + "/" + (Fecha.getMonth() +1) + "/" + Fecha.getFullYear());
+                    var sep = sFecha.indexOf('/') != -1 ? '/' : '-';
+                    var aFecha = sFecha.split(sep);
+                    var fecha = aFecha[2]+'/'+aFecha[1]+'/'+aFecha[0];
+                    fecha= new Date(fecha);
+                    fecha.setDate(fecha.getDate()+parseInt(d));
+                    var anno=fecha.getFullYear();
+                    var mes= fecha.getMonth()+1;
+                    var dia= fecha.getDate();
+                    mes = (mes < 10) ? ("0" + mes) : mes;
+                    dia = (dia < 10) ? ("0" + dia) : dia;
+                    var fechaFinal = anno+sep+mes+sep+dia;
+                    return (fechaFinal);
+                }
+
                 this.tea = (Math.pow(1+this.tem/100,12)-1)*100;
                 this.plazo_final = this.plazo;
 
@@ -319,57 +337,136 @@
                 if(this.plazo<='23'){
                     this.monto_a_llevar = this.monto_oferta;
                 }else{
+                    var url = "";
                     if(this.monto_oferta<=5000){
                         this.monto_a_llevar = 5000;
                     }else{
-                        switch(this.producto){
-                            case "1":{
-                                let me = this;
+                        if(this.producto=="1"){
+                            var url = 'controlador/get_pya_cdd_value.php?plazo='+sys_calc_3.plazo_final+'&monto='+sys_calc_3.monto_oferta;
+                        } else {
+                            if(this.producto=="2"){
                                 var url = 'controlador/get_pya_cdd_value.php?plazo='+sys_calc_3.plazo_final+'&monto='+sys_calc_3.monto_oferta;
-                                axios.get(url)
-                                .then(function (response) {
-                                    me.monto_a_llevar = response.data;
-                                })
-                                .catch(function (error) {
-                                    console.log(error);
-                                })
-                                .finally(function () {
-                                });
-                                break;
-                            }
-                            case "2":{
-                                let me = this;
-                                var url = 'controlador/get_pya_cdd_value.php?plazo='+sys_calc_3.plazo_final+'&monto='+sys_calc_3.monto_oferta;
-                                axios.get(url)
-                                .then(function (response) {
-                                    me.monto_a_llevar = response.data;
-                                })
-                                .catch(function (error) {
-                                    console.log(error);
-                                })
-                                .finally(function () {
-                                });
-                                break;
-                            }
-                            case "3":{
-                                let me = this;
-                                var url = 'controlador/get_prestamo_senior_value.php?plazo='+sys_calc_3.plazo_final+'&monto='+sys_calc_3.monto_oferta;
-                                axios.get(url)
-                                .then(function (response) {
-                                    me.monto_a_llevar = response.data;
-                                })
-                                .catch(function (error) {
-                                    console.log(error);
-                                })
-                                .finally(function () {
-                                });
-                                break;
-                            }
-                            default: {
-                                me.monto_a_llevar = 0.00;
-                                break;
+                            } else {
+                                if(this.producto=="3"){
+                                    var url = 'controlador/get_pya_cdd_value.php?plazo='+sys_calc_3.plazo_final+'&monto='+sys_calc_3.monto_oferta;
+                                }
                             }
                         }
+                        
+                        let me = this;
+                        axios.get(url)
+                        .then(function (response) {
+                            me.monto_a_llevar = response.data;
+
+                            //======================================================================
+                            var f_hoy = moment(me.hoy,"YYYY-MM-DD");
+                            var tabla_capital = [];
+                            var mes = moment(me.hoy,"YYYY-MM-DD").get("month")+1;
+                            var dias_p = 0;
+                            var fech_ant = "";
+                            var capital_ant = "";
+
+                            if(mes==1 || mes==3 || mes==5 || mes==7 || mes==8 || mes==10 || mes==12){dias_p=31;}
+                            if(mes==2){dias_p=28;}
+                            if(mes==4 || mes==6 || mes==9 || mes==11){dias_p=30;}
+
+                            var dias_t = (dias_p - moment(me.hoy,"YYYY-MM-DD").get('date'))+parseInt(me.fec_pago,10);
+
+                            f_fin = moment(me.hoy,"YYYY-MM-DD").add(dias_t,'days');
+                            f_hoy_value = moment(me.hoy,"YYYY-MM-DD").get('year')+"-"+(moment(me.hoy,"YYYY-MM-DD").get('month')+1)+"-"+moment(me.hoy,"YYYY-MM-DD").get('date');
+                            f_fin_value = moment(me.hoy,"YYYY-MM-DD").add(dias_t,'days').get('year')+"-"+(moment(me.hoy,"YYYY-MM-DD").add(dias_t,'days').get('month')+1)+"-"+moment(me.hoy,"YYYY-MM-DD").add(dias_t,'days').get('date');
+
+                            var diferencia = f_fin.diff(f_hoy,'days');
+
+                            for(var i=1;i<=48;i++){
+                                var inicio = "";
+                                var fin = "";
+                                var nro_dias = "";
+                                var capital = "";
+                                var desgravamen = "";
+                                var pp = "";
+
+                                if(me.producto=="1"){
+                                    desgravamen = "10.00";
+                                    pp = "5";
+                                } else {
+                                    if(me.producto=="2"){
+                                        desgravamen = "20.00";
+                                        pp = "0";
+                                    } else {
+                                        if(me.producto = "3"){
+                                            desgravamen = "20.00";
+                                            pp = "0";
+                                        }
+                                    }
+                                }
+
+                                if(i==1){
+                                    if(i<=me.plazo_final){
+                                        inicio=me.hoy;
+                                        if(diferencia>31){
+                                            fin = moment(me.hoy,"YYYY-MM-DD").add(dias_t,'days').get('year')+"-"+(moment(me.hoy,"YYYY-MM-DD").add(dias_t,'days').get('month')+1)+"-"+moment(me.hoy,"YYYY-MM-DD").add(dias_t,'days').get('date');
+                                            fech_ant = fin;
+                                        }else{
+                                            mes_n = moment(me.hoy,"YYYY-MM-DD").get('month')+2;
+                                            if(mes_n==1 || mes_n==3 || mes_n==5 || mes_n==7 || mes_n==8 || mes_n==10 || mes_n==12){dias_p_n=31;}
+                                            if(mes_n==2){dias_p_n=28;}
+                                            if(mes_n==4 || mes_n==6 || mes_n==9 || mes_n==11){dias_p_n=30;}
+                                            fin = moment(me.hoy,"YYYY-MM-DD").add((dias_t+dias_p_n),'days').get('year')+"-"+(moment(me.hoy,"YYYY-MM-DD").add((dias_t+dias_p_n),'days').get('month')+1)+"-"+moment(me.hoy,"YYYY-MM-DD").add((dias_t+dias_p_n),'days').get('date');
+                                            fech_ant = fin;
+                                        }
+                                    }
+
+                                    if(i<=me.monto_a_llevar){
+                                        capital = me.monto_a_llevar;
+                                        capital_ant = capital;
+                                    }
+                                } else {
+                                    if(i<=me.plazo_final){
+                                        inicio = fech_ant;
+                                        var mes_x = moment(fech_ant,"YYYY-MM-DD").get("month")+1;
+                                        if(mes_x==1 || mes_x==3 || mes_x==5 || mes_x==7 || mes_x==8 || mes_x==10 || mes_x==12){dias_p_x=31;}
+                                        if(mes_x==2){dias_p_x=28;}
+                                        if(mes_x==4 || mes_x==6 || mes_x==9 || mes_x==11){dias_p_x=30;}
+
+                                        var dias_t_x = (dias_p_x - moment(fech_ant,"YYYY-MM-DD").get('date'))+parseInt(me.fec_pago,10);
+
+                                        fin = moment(fech_ant,"YYYY-MM-DD").add(dias_t_x,'days').get('year')+"-"+(moment(fech_ant,"YYYY-MM-DD").add(dias_t_x,'days').get('month')+1)+"-"+moment(fech_ant,"YYYY-MM-DD").add(dias_t_x,'days').get('date');
+
+                                        fech_ant = fin;
+
+                                        capital = capital_ant;
+                                        capital_ant = capital;
+                                    }
+                                }
+
+                                if(inicio!="" && fin!=""){
+                                    nro_dias = moment(fin,"YYYY-MM-DD").diff(moment(inicio,"YYYY-MM-DD"),'days');
+                                }
+
+                                tabla_capital.push({
+                                    "inicio":inicio,
+                                    "fin":fin,
+                                    "nro_dias":nro_dias,
+                                    "capital":capital,
+                                    "desgravamen":desgravamen,
+                                    "pp":pp,
+                                    "eecc":"",
+                                    "amortizacion":"",
+                                    "interes":"",
+                                    "cuota":""
+                                });
+                            }
+
+                            console.log(tabla_capital);
+                            //======================================================================
+                            
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        })
+                        .finally(function () {
+                        });
                     }
                 }
             }

@@ -139,6 +139,7 @@
 <script src="./vista/datatables/datatables.min.js"></script>
 <script src="./vista/js/vue.js"></script>
 <script src="./vista/js/axios.min.js"></script>
+<script src="./vista/js/moment.js"></script>
 <script type="text/javascript" src="./vista/sweetalert/dist/sweetalert.min.js"></script>
 <!-- FastClick -->
 <script src="./vista/bower_components/fastclick/lib/fastclick.js"></script>
