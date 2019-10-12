@@ -365,6 +365,9 @@
                             var dias_p = 0;
                             var fech_ant = "";
                             var capital_ant = "";
+                            var cuota = "";
+                            var factor = "";
+                            var ted = Math.pow(1+me.tea,(1/360))-1;
 
                             if(mes==1 || mes==3 || mes==5 || mes==7 || mes==8 || mes==10 || mes==12){dias_p=31;}
                             if(mes==2){dias_p=28;}
@@ -442,6 +445,12 @@
 
                                 if(inicio!="" && fin!=""){
                                     nro_dias = moment(fin,"YYYY-MM-DD").diff(moment(inicio,"YYYY-MM-DD"),'days');
+                                }
+
+                                if(i<=me.plazo_final){
+                                    if(nro_dias!=""){
+                                        factor = 1/(Math.pow(1+me.ted/100,nro_dias));
+                                    }
                                 }
 
                                 tabla_capital.push({
